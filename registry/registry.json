@@ -1,0 +1,26 @@
+[
+  {
+    "name": "button",
+    "description": "DaisyUI button variants with HTMX support",
+    "file": "src/button/Button.kt",
+    "kotlinPackage": "dev.jwillert.krate.components"
+  },
+  {
+    "name": "modal",
+    "description": "DaisyUI modal dialog with open/close helpers",
+    "file": "src/modal/Modal.kt",
+    "kotlinPackage": "dev.jwillert.krate.components"
+  },
+  {
+    "name": "card",
+    "description": "DaisyUI card with header, body and footer slots",
+    "file": "src/card/Card.kt",
+    "kotlinPackage": "dev.jwillert.krate.components"
+  },
+  {
+    "name": "table",
+    "description": "DaisyUI data table with HTMX pagination support",
+    "file": "src/table/Table.kt",
+    "kotlinPackage": "dev.jwillert.krate.components"
+  }
+]
