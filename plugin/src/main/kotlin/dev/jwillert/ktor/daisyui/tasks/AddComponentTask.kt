@@ -1,4 +1,4 @@
-package dev.jwillert.kopetal.tasks
+package dev.jwillert.ktor.daisyui.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -30,7 +30,7 @@ abstract class AddComponentTask : DefaultTask() {
 
     init {
         group = "daisyui"
-        description = "Add a Kopetal component to your project (shadcn-like registry)"
+        description = "Add a Daisyui component to your project (shadcn-like registry)"
     }
 
     @TaskAction

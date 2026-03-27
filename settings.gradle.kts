@@ -3,9 +3,13 @@ pluginManagement {
         gradlePluginPortal()
         mavenCentral()
     }
+
+    plugins {
+        kotlin("jvm") version "2.3.10"
+    }
 }
 
-rootProject.name = "kopetal"
+rootProject.name = "ktor-daisyui"
 
-include("kopetal-gradle-plugin")
-include("kopetal-components")
+include("plugin")
+include("registry")

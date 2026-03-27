@@ -1,10 +1,4 @@
-plugins {
-    `kotlin-dsl` apply false
-    `java-gradle-plugin` apply false
-    `maven-publish` apply false
-}
-
 allprojects {
-    group = "dev.jwillert.kopetal"
+    group = "dev.jwillert.ktor.daisyui"
     version = rootProject.version
 }

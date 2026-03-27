@@ -1,4 +1,4 @@
-package dev.jwillert.kopetal.tasks
+package dev.jwillert.ktor.daisyui.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction

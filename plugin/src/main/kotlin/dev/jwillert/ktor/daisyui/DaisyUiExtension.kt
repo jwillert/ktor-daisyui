@@ -1,9 +1,9 @@
-package dev.jwillert.kopetal
+package dev.jwillert.ktor.daisyui
 
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 
-abstract class KopetalExtension {
+abstract class DaisyuiExtension {
     abstract val tailwindVersion: Property<String>
     abstract val daisyuiVersion: Property<String>
     abstract val scanPaths: ListProperty<String>

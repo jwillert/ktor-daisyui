@@ -1,4 +1,4 @@
-package dev.jwillert.kopetal.components
+package dev.jwillert.daisyui.components
 
 import kotlinx.html.*
 

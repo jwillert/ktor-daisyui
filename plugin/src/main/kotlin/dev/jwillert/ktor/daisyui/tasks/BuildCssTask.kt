@@ -1,6 +1,6 @@
-package dev.jwillert.kopetal.tasks
+package dev.jwillert.ktor.daisyui.tasks
 
-import dev.jwillert.kopetal.common.execPlatformAware
+import dev.jwillert.ktor.daisyui.common.execPlatformAware
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.*

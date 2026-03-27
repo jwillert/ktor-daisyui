@@ -1,4 +1,4 @@
-package dev.jwillert.kopetal.common
+package dev.jwillert.ktor.daisyui.common
 
 import org.gradle.api.Action
 import org.gradle.api.Project

@@ -1,14 +1,18 @@
-package dev.jwillert.kopetal
+package dev.jwillert.ktor.daisyui
 
-import dev.jwillert.kopetal.tasks.*
+import dev.jwillert.ktor.daisyui.tasks.AddComponentTask
+import dev.jwillert.ktor.daisyui.tasks.BuildCssTask
+import dev.jwillert.ktor.daisyui.tasks.GenerateConfigTask
+import dev.jwillert.ktor.daisyui.tasks.InstallTailwindTask
+import dev.jwillert.ktor.daisyui.tasks.WatchCssTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class KopetalPlugin : Plugin<Project> {
+class DaisyUiPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create(
-            "kopetal",
-            KopetalExtension::class.java
+            "daisyui",
+            DaisyuiExtension::class.java
         )
 
         val installTask = project.tasks.register(
@@ -54,6 +58,6 @@ class KopetalPlugin : Plugin<Project> {
             dependsOn(buildTask)
         }
 
-        project.logger.lifecycle("Kopetal Plugin applied to ${project.name}")
+        project.logger.lifecycle("Daisyui Plugin applied to ${project.name}")
     }
 }
