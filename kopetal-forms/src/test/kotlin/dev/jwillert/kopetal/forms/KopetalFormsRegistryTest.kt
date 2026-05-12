@@ -2,6 +2,7 @@ package dev.jwillert.kopetal.forms
 
 import kotlinx.html.div
 import kotlinx.html.stream.appendHTML
+import kotlinx.html.stream.createHTML
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -43,5 +44,29 @@ class KopetalFormsRegistryTest {
         }
 
         assertTrue(inputCalled)
+    }
+
+    @Test
+    fun `default button renders with label and btn class`() {
+        installKopetalFormsDefaults()
+
+        val html = createHTML().div {
+            KopetalFormsRegistry.button(this, "Save", false)
+        }
+
+        assertTrue(html.contains("Save"), "Expected label in output: $html")
+        assertTrue(html.contains("btn"), "Expected btn class in output: $html")
+    }
+
+    @Test
+    fun `default input renders with name attribute`() {
+        installKopetalFormsDefaults()
+
+        val html = createHTML().div {
+            KopetalFormsRegistry.input(this, "username", "text", false)
+        }
+
+        assertTrue(html.contains("username"), "Expected name in output: $html")
+        assertTrue(html.contains("input"), "Expected input element in output: $html")
     }
 }
