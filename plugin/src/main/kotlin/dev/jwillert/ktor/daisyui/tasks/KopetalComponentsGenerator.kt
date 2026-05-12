@@ -32,6 +32,7 @@ fun generateKopetalComponentsContent(
     return buildString {
         appendLine("package $packageName")
         appendLine()
+        // FlowContent is always imported: slot lambdas have FlowContent as their receiver type
         appendLine("import kotlinx.html.FlowContent")
         imports.forEach { appendLine("import $it") }
         appendLine()
