@@ -10,7 +10,6 @@ fun FlowContent.formField(
     name: String,
     type: String = "text",
     required: Boolean = false,
-    disabled: Boolean = false,
 ) {
     div(classes = "form-control") {
         label(classes = "label") {
