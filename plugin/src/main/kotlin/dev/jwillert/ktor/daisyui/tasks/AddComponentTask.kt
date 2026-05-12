@@ -75,6 +75,21 @@ abstract class AddComponentTask : DefaultTask() {
         targetFile.writeText(sourceWithPackage)
 
         logger.lifecycle("Component '${component.name}' added at ${targetFile.relativeTo(project.projectDir)}")
+
+        // Regenerate KopetalComponents.kt for all installed slot components
+        val installedNames = outputDir.listFiles()
+            ?.filter { it.extension == "kt" && it.name != "KopetalComponents.kt" }
+            ?.map { it.nameWithoutExtension.replaceFirstChar { c -> c.lowercaseChar() } }
+            ?.toSet() ?: emptySet()
+
+        val packageName = derivePackage(outputDir)
+        val componentsContent = generateKopetalComponentsContent(installedNames, registry, packageName)
+
+        if (componentsContent.isNotEmpty()) {
+            val componentsFile = File(outputDir, "KopetalComponents.kt")
+            componentsFile.writeText(componentsContent)
+            logger.lifecycle("KopetalComponents.kt updated at ${componentsFile.relativeTo(project.projectDir)}")
+        }
     }
 
     private fun fetchRegistry(): List<ComponentEntry> {
