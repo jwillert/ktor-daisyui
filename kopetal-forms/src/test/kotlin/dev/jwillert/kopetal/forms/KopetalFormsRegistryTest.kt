@@ -1,6 +1,5 @@
 package dev.jwillert.kopetal.forms
 
-import kotlinx.html.FlowContent
 import kotlinx.html.div
 import kotlinx.html.stream.appendHTML
 import org.junit.jupiter.api.AfterEach
@@ -21,27 +20,25 @@ class KopetalFormsRegistryTest {
     @Test
     fun `button slot can be overridden`() {
         var called = false
-        KopetalFormsRegistry.button = { label, disabled ->
-            called = true
-        }
+        KopetalFormsRegistry.button = { _, _ -> called = true }
+
         buildString {
             appendHTML().div {
-                this@div.apply { KopetalFormsRegistry.button.invoke(this, "Click me", false) }
+                this@div.apply { KopetalFormsRegistry.button(this, "Click me", false) }
             }
         }
+
         assertTrue(called)
     }
 
     @Test
     fun `input slot can be overridden independently of button`() {
         var inputCalled = false
-        KopetalFormsRegistry.input = { name, type, required ->
-            inputCalled = true
-        }
+        KopetalFormsRegistry.input = { _, _, _ -> inputCalled = true }
 
         buildString {
             appendHTML().div {
-                this@div.apply { KopetalFormsRegistry.input.invoke(this, "email", "email", true) }
+                this@div.apply { KopetalFormsRegistry.input(this, "email", "email", true) }
             }
         }
 
