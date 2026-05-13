@@ -14,5 +14,6 @@ rootProject.name = "ktor-daisyui"
 include("plugin")
 include("registry")
 include("kopetal-registry")
+include("kopetal-ui")
 include("kopetal-forms")
 include("sample")

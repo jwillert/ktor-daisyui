@@ -9,6 +9,7 @@ repositories {
 
 dependencies {
     implementation(project(":kopetal-registry"))
+    implementation(project(":kopetal-ui"))
     implementation(project(":kopetal-forms"))
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.11.0")
     implementation("io.ktor:ktor-server-netty:3.1.3")

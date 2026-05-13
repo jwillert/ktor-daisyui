@@ -11,8 +11,6 @@ repositories {
 
 dependencies {
     implementation(project(":kopetal-registry"))
-    implementation(project(":kopetal-ui"))
-    implementation("io.ktor:ktor-server-core:3.1.3")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.11.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
@@ -42,7 +40,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "dev.jwillert"
-            artifactId = "kopetal-forms"
+            artifactId = "kopetal-ui"
             from(components["java"])
         }
     }
