@@ -1,5 +1,8 @@
 package dev.jwillert.kopetal.forms
 
+import dev.jwillert.kopetal.ButtonKey
+import dev.jwillert.kopetal.InputKey
+import dev.jwillert.kopetal.KopetalRegistry
 import io.ktor.server.application.createApplicationPlugin
 import kotlinx.html.ButtonType
 import kotlinx.html.InputType
@@ -7,14 +10,14 @@ import kotlinx.html.button
 import kotlinx.html.input
 
 fun installKopetalFormsDefaults() {
-    KopetalFormsRegistry.button = { label, disabled ->
+    KopetalRegistry[ButtonKey] = { label, disabled ->
         button(classes = if (disabled) "btn btn-primary btn-disabled" else "btn btn-primary") {
             type = ButtonType.button
             if (disabled) attributes["disabled"] = "disabled"
             +label
         }
     }
-    KopetalFormsRegistry.input = { name, type, required ->
+    KopetalRegistry[InputKey] = { name, type, required ->
         val inputType = when (type) {
             "email" -> InputType.email
             "password" -> InputType.password

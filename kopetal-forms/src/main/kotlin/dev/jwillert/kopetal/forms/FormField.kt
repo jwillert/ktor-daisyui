@@ -1,5 +1,6 @@
 package dev.jwillert.kopetal.forms
 
+import dev.jwillert.kopetal.koInput
 import kotlinx.html.FlowContent
 import kotlinx.html.div
 import kotlinx.html.label
@@ -15,6 +16,6 @@ fun FlowContent.formField(
         label(classes = "label") {
             span(classes = "label-text") { +label }
         }
-        KopetalFormsRegistry.input(this, name, type, required)
+        koInput(name, type, required)
     }
 }

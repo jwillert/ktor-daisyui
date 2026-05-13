@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":kopetal-core"))
     implementation("io.ktor:ktor-server-core:3.1.3")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.11.0")
 

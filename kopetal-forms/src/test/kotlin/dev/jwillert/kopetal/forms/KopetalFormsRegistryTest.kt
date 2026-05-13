@@ -1,49 +1,37 @@
 package dev.jwillert.kopetal.forms
 
+import dev.jwillert.kopetal.ButtonKey
+import dev.jwillert.kopetal.InputKey
+import dev.jwillert.kopetal.KopetalRegistry
+import dev.jwillert.kopetal.koButton
+import dev.jwillert.kopetal.koInput
 import kotlinx.html.div
-import kotlinx.html.stream.appendHTML
 import kotlinx.html.stream.createHTML
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import dev.jwillert.kopetal.forms.formField
 
 class KopetalFormsRegistryTest {
 
-    private val originalButton = KopetalFormsRegistry.button
-    private val originalInput = KopetalFormsRegistry.input
-
     @AfterEach
     fun restore() {
-        KopetalFormsRegistry.button = originalButton
-        KopetalFormsRegistry.input = originalInput
+        KopetalRegistry.remove(ButtonKey)
+        KopetalRegistry.remove(InputKey)
     }
 
     @Test
     fun `button slot can be overridden`() {
         var called = false
-        KopetalFormsRegistry.button = { _, _ -> called = true }
-
-        buildString {
-            appendHTML().div {
-                this@div.apply { KopetalFormsRegistry.button(this, "Click me", false) }
-            }
-        }
-
+        KopetalRegistry[ButtonKey] = { _, _ -> called = true }
+        createHTML().div { koButton("Click me") }
         assertTrue(called)
     }
 
     @Test
     fun `input slot can be overridden independently of button`() {
         var inputCalled = false
-        KopetalFormsRegistry.input = { _, _, _ -> inputCalled = true }
-
-        buildString {
-            appendHTML().div {
-                this@div.apply { KopetalFormsRegistry.input(this, "email", "email", true) }
-            }
-        }
-
+        KopetalRegistry[InputKey] = { _, _, _ -> inputCalled = true }
+        createHTML().div { koInput("email") }
         assertTrue(inputCalled)
     }
 
@@ -52,7 +40,7 @@ class KopetalFormsRegistryTest {
         installKopetalFormsDefaults()
 
         val html = createHTML().div {
-            KopetalFormsRegistry.button(this, "Save", false)
+            koButton("Save")
         }
 
         assertTrue(html.contains("Save"), "Expected label in output: $html")
@@ -64,7 +52,7 @@ class KopetalFormsRegistryTest {
         installKopetalFormsDefaults()
 
         val html = createHTML().div {
-            KopetalFormsRegistry.input(this, "username", "text", false)
+            koInput("username")
         }
 
         assertTrue(html.contains("username"), "Expected name in output: $html")
@@ -88,7 +76,7 @@ class KopetalFormsRegistryTest {
     fun `formField uses overridden input slot`() {
         var capturedName = ""
         var capturedRequired = false
-        KopetalFormsRegistry.input = { name, _, required ->
+        KopetalRegistry[InputKey] = { name, _, required ->
             capturedName = name
             capturedRequired = required
         }
