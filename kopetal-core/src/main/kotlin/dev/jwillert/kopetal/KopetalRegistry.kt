@@ -24,10 +24,10 @@ val InputKey = RegistryKey<FlowContent.(name: String, type: String, required: Bo
 
 fun FlowContent.koButton(label: String, disabled: Boolean = false) =
     (KopetalRegistry[ButtonKey]
-        ?: error("KopetalRegistry[ButtonKey] not installed — call install(KopetalForms) in Application.module()"))
+        ?: error("KopetalRegistry[ButtonKey] not installed — register a button implementation before rendering"))
         .invoke(this, label, disabled)
 
 fun FlowContent.koInput(name: String, type: String = "text", required: Boolean = false) =
     (KopetalRegistry[InputKey]
-        ?: error("KopetalRegistry[InputKey] not installed — call install(KopetalForms) in Application.module()"))
+        ?: error("KopetalRegistry[InputKey] not installed — register an input implementation before rendering"))
         .invoke(this, name, type, required)
