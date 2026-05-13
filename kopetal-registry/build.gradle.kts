@@ -38,7 +38,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "dev.jwillert"
-            artifactId = "kopetal-core"
+            artifactId = "kopetal-registry"
             from(components["java"])
         }
     }
