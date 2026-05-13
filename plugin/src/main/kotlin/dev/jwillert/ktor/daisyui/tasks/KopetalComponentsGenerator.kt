@@ -1,13 +1,15 @@
 package dev.jwillert.ktor.daisyui.tasks
 
 fun generateConfigureStatement(entry: ComponentEntry): String? {
-    val fqn = entry.slotRegistryClass ?: return null
+    val registryFqn = entry.slotRegistryClass ?: return null
+    val keyFqn = entry.slotKey ?: return null
     val params = entry.slotParams ?: return null
-    val simpleName = fqn.substringAfterLast(".")
+    val registrySimpleName = registryFqn.substringAfterLast(".")
+    val keySimpleName = keyFqn.substringAfterLast(".")
     val paramNames = params.split(",").map { it.trim().substringBefore(":").trim() }
     val args = paramNames.joinToString(", ") { "$it = $it" }
     val fnName = "ko${entry.name.replaceFirstChar { it.uppercaseChar() }}"
-    return "$simpleName.${entry.name} = { ${paramNames.joinToString(", ")} -> $fnName($args) }"
+    return "$registrySimpleName[$keySimpleName] = { ${paramNames.joinToString(", ")} -> $fnName($args) }"
 }
 
 fun generateKopetalComponentsContent(
@@ -18,14 +20,15 @@ fun generateKopetalComponentsContent(
     val slotEntries = allRegistryEntries.filter { entry ->
         entry.name in installedNames &&
             entry.slotRegistryClass != null &&
+            entry.slotKey != null &&
             entry.slotParams != null
     }
     if (slotEntries.isEmpty()) return ""
 
-    val imports = slotEntries
-        .mapNotNull { it.slotRegistryClass }
-        .distinct()
-        .sorted()
+    val imports = (
+        slotEntries.mapNotNull { it.slotRegistryClass } +
+            slotEntries.mapNotNull { it.slotKey }
+        ).distinct().sorted()
 
     val statements = slotEntries.mapNotNull { generateConfigureStatement(it) }
 

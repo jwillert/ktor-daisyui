@@ -14,6 +14,35 @@ class KopetalComponentsGeneratorTest {
             file = "src/modal/Modal.kt",
             kotlinPackage = "dev.jwillert.daisyui.components",
             slotRegistryClass = null,
+            slotKey = null,
+            slotParams = null
+        )
+        assertEquals(null, generateConfigureStatement(entry))
+    }
+
+    @Test
+    fun `generateConfigureStatement returns null when slotKey is null even if slotRegistryClass is set`() {
+        val entry = ComponentEntry(
+            name = "button",
+            description = "button",
+            file = "src/button/Button.kt",
+            kotlinPackage = "pkg",
+            slotRegistryClass = "dev.jwillert.kopetal.KopetalRegistry",
+            slotKey = null,
+            slotParams = "label: String, disabled: Boolean"
+        )
+        assertEquals(null, generateConfigureStatement(entry))
+    }
+
+    @Test
+    fun `generateConfigureStatement returns null when slotParams is null even if slotKey is set`() {
+        val entry = ComponentEntry(
+            name = "button",
+            description = "button",
+            file = "src/button/Button.kt",
+            kotlinPackage = "pkg",
+            slotRegistryClass = "dev.jwillert.kopetal.KopetalRegistry",
+            slotKey = "dev.jwillert.kopetal.ButtonKey",
             slotParams = null
         )
         assertEquals(null, generateConfigureStatement(entry))
@@ -26,13 +55,13 @@ class KopetalComponentsGeneratorTest {
             description = "button",
             file = "src/button/Button.kt",
             kotlinPackage = "dev.jwillert.daisyui.components",
-            slotRegistryClass = "dev.jwillert.kopetal.forms.KopetalFormsRegistry",
+            slotRegistryClass = "dev.jwillert.kopetal.KopetalRegistry",
+            slotKey = "dev.jwillert.kopetal.ButtonKey",
             slotParams = "label: String, disabled: Boolean"
         )
-        val result = generateConfigureStatement(entry)
         assertEquals(
-            "KopetalFormsRegistry.button = { label, disabled -> koButton(label = label, disabled = disabled) }",
-            result
+            "KopetalRegistry[ButtonKey] = { label, disabled -> koButton(label = label, disabled = disabled) }",
+            generateConfigureStatement(entry)
         )
     }
 
@@ -43,41 +72,30 @@ class KopetalComponentsGeneratorTest {
             description = "input",
             file = "src/input/Input.kt",
             kotlinPackage = "dev.jwillert.daisyui.components",
-            slotRegistryClass = "dev.jwillert.kopetal.forms.KopetalFormsRegistry",
+            slotRegistryClass = "dev.jwillert.kopetal.KopetalRegistry",
+            slotKey = "dev.jwillert.kopetal.InputKey",
             slotParams = "name: String, type: String, required: Boolean"
         )
-        val result = generateConfigureStatement(entry)
         assertEquals(
-            "KopetalFormsRegistry.input = { name, type, required -> koInput(name = name, type = type, required = required) }",
-            result
+            "KopetalRegistry[InputKey] = { name, type, required -> koInput(name = name, type = type, required = required) }",
+            generateConfigureStatement(entry)
         )
     }
 
     @Test
     fun `generateKopetalComponentsContent returns empty string when no slot entries`() {
         val entries = listOf(
-            ComponentEntry("modal", "modal", "src/modal/Modal.kt", "pkg", null, null),
-            ComponentEntry("card", "card", "src/card/Card.kt", "pkg", null, null),
+            ComponentEntry("modal", "modal", "src/modal/Modal.kt", "pkg", null, null, null),
+            ComponentEntry("card", "card", "src/card/Card.kt", "pkg", null, null, null),
         )
-        val result = generateKopetalComponentsContent(
-            installedNames = setOf("modal", "card"),
-            allRegistryEntries = entries,
-            packageName = "com.example.components"
+        assertEquals(
+            "",
+            generateKopetalComponentsContent(
+                installedNames = setOf("modal", "card"),
+                allRegistryEntries = entries,
+                packageName = "com.example.components"
+            )
         )
-        assertEquals("", result)
-    }
-
-    @Test
-    fun `generateConfigureStatement returns null when slotParams is null even if slotRegistryClass is set`() {
-        val entry = ComponentEntry(
-            name = "button",
-            description = "button",
-            file = "src/button/Button.kt",
-            kotlinPackage = "pkg",
-            slotRegistryClass = "dev.jwillert.kopetal.forms.KopetalFormsRegistry",
-            slotParams = null
-        )
-        assertEquals(null, generateConfigureStatement(entry))
     }
 
     @Test
@@ -85,13 +103,17 @@ class KopetalComponentsGeneratorTest {
         val entries = listOf(
             ComponentEntry(
                 "button", "button", "src/button/Button.kt", "pkg",
-                "dev.jwillert.kopetal.forms.KopetalFormsRegistry", "label: String, disabled: Boolean"
+                "dev.jwillert.kopetal.KopetalRegistry",
+                "dev.jwillert.kopetal.ButtonKey",
+                "label: String, disabled: Boolean"
             ),
             ComponentEntry(
                 "input", "input", "src/input/Input.kt", "pkg",
-                "dev.jwillert.kopetal.forms.KopetalFormsRegistry", "name: String, type: String, required: Boolean"
+                "dev.jwillert.kopetal.KopetalRegistry",
+                "dev.jwillert.kopetal.InputKey",
+                "name: String, type: String, required: Boolean"
             ),
-            ComponentEntry("modal", "modal", "src/modal/Modal.kt", "pkg", null, null),
+            ComponentEntry("modal", "modal", "src/modal/Modal.kt", "pkg", null, null, null),
         )
         val result = generateKopetalComponentsContent(
             installedNames = setOf("button", "input"),
@@ -99,24 +121,17 @@ class KopetalComponentsGeneratorTest {
             packageName = "com.example.components"
         )
 
-        assertTrue(result.contains("package com.example.components"), "Expected package declaration")
-        assertTrue(result.contains("import dev.jwillert.kopetal.forms.KopetalFormsRegistry"), "Expected registry import")
-        assertTrue(result.contains("object KopetalComponents"), "Expected object declaration")
-        assertTrue(result.contains("fun configure()"), "Expected configure function")
-        assertTrue(result.contains("KopetalFormsRegistry.button"), "Expected button slot assignment")
-        assertTrue(result.contains("KopetalFormsRegistry.input"), "Expected input slot assignment")
-        assertTrue(result.contains("koButton("), "Expected koButton call")
-        assertTrue(result.contains("koInput("), "Expected koInput call")
-
         val expected = "package com.example.components\n" +
             "\n" +
-            "import dev.jwillert.kopetal.forms.KopetalFormsRegistry\n" +
+            "import dev.jwillert.kopetal.ButtonKey\n" +
+            "import dev.jwillert.kopetal.InputKey\n" +
+            "import dev.jwillert.kopetal.KopetalRegistry\n" +
             "\n" +
             "// Auto-generated by addComponent — do not edit manually\n" +
             "object KopetalComponents {\n" +
             "    fun configure() {\n" +
-            "        KopetalFormsRegistry.button = { label, disabled -> koButton(label = label, disabled = disabled) }\n" +
-            "        KopetalFormsRegistry.input = { name, type, required -> koInput(name = name, type = type, required = required) }\n" +
+            "        KopetalRegistry[ButtonKey] = { label, disabled -> koButton(label = label, disabled = disabled) }\n" +
+            "        KopetalRegistry[InputKey] = { name, type, required -> koInput(name = name, type = type, required = required) }\n" +
             "    }\n" +
             "}"
         assertEquals(expected, result)
@@ -127,11 +142,15 @@ class KopetalComponentsGeneratorTest {
         val entries = listOf(
             ComponentEntry(
                 "button", "button", "src/button/Button.kt", "pkg",
-                "dev.jwillert.kopetal.forms.KopetalFormsRegistry", "label: String, disabled: Boolean"
+                "dev.jwillert.kopetal.KopetalRegistry",
+                "dev.jwillert.kopetal.ButtonKey",
+                "label: String, disabled: Boolean"
             ),
             ComponentEntry(
                 "input", "input", "src/input/Input.kt", "pkg",
-                "dev.jwillert.kopetal.forms.KopetalFormsRegistry", "name: String, type: String, required: Boolean"
+                "dev.jwillert.kopetal.KopetalRegistry",
+                "dev.jwillert.kopetal.InputKey",
+                "name: String, type: String, required: Boolean"
             ),
         )
         val result = generateKopetalComponentsContent(
@@ -140,7 +159,7 @@ class KopetalComponentsGeneratorTest {
             packageName = "com.example.components"
         )
 
-        assertTrue(result.contains("KopetalFormsRegistry.button"), "Expected button slot")
-        assertTrue(!result.contains("KopetalFormsRegistry.input"), "Expected no input slot: $result")
+        assertTrue(result.contains("KopetalRegistry[ButtonKey]"), "Expected button slot")
+        assertTrue(!result.contains("KopetalRegistry[InputKey]"), "Expected no input slot: $result")
     }
 }

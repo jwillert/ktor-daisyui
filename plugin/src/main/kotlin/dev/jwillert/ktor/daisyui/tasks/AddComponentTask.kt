@@ -15,6 +15,7 @@ data class ComponentEntry(
     val file: String,
     val kotlinPackage: String,
     val slotRegistryClass: String? = null,
+    val slotKey: String? = null,
     val slotParams: String? = null,
 )
 
@@ -127,8 +128,9 @@ abstract class AddComponentTask : DefaultTask() {
             val file = fields["file"] ?: return@forEach
             val kotlinPackage = fields["kotlinPackage"] ?: "dev.jwillert.ktor.daisyui.components"
             val slotRegistryClass = fields["slotRegistryClass"]
+            val slotKey = fields["slotKey"]
             val slotParams = fields["slotParams"]
-            entries.add(ComponentEntry(name, description, file, kotlinPackage, slotRegistryClass, slotParams))
+            entries.add(ComponentEntry(name, description, file, kotlinPackage, slotRegistryClass, slotKey, slotParams))
         }
 
         return entries
