@@ -10,7 +10,10 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.11.0")
+
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.11.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -36,7 +39,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "dev.jwillert"
-            artifactId = "kopetal-registry"
+            artifactId = "kopetal-core"
             from(components["java"])
         }
     }

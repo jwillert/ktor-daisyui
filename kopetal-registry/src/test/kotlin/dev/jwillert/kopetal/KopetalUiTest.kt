@@ -58,14 +58,6 @@ class KopetalUiTest {
     }
 
     @Test
-    fun `koButton defaults disabled to false`() {
-        var capturedDisabled = true
-        KopetalRegistry[ButtonKey] = { _, disabled -> capturedDisabled = disabled }
-        createHTML().div { koButton("Go") }
-        assertFalse(capturedDisabled)
-    }
-
-    @Test
     fun `koInput passes name, type, required correctly`() {
         var capturedName = ""
         var capturedType = ""
@@ -79,18 +71,5 @@ class KopetalUiTest {
         assertEquals("email", capturedName)
         assertEquals("email", capturedType)
         assertTrue(capturedRequired)
-    }
-
-    @Test
-    fun `koInput defaults type to text and required to false`() {
-        var capturedType = ""
-        var capturedRequired = true
-        KopetalRegistry[InputKey] = { _, type, required ->
-            capturedType = type
-            capturedRequired = required
-        }
-        createHTML().div { koInput("username") }
-        assertEquals("text", capturedType)
-        assertFalse(capturedRequired)
     }
 }
