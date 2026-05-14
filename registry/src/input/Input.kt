@@ -1,6 +1,7 @@
 package dev.jwillert.daisyui.components
 
 import kotlinx.html.FlowContent
+import kotlinx.html.INPUT
 import kotlinx.html.InputType
 import kotlinx.html.input
 
@@ -11,6 +12,7 @@ fun FlowContent.koInput(
     required: Boolean = false,
     disabled: Boolean = false,
     additionalClasses: String = "",
+    block: INPUT.() -> Unit = {}
 ) {
     val inputType = when (type) {
         "email" -> InputType.email
@@ -34,5 +36,6 @@ fun FlowContent.koInput(
         if (placeholder.isNotEmpty()) this.placeholder = placeholder
         if (required) attributes["required"] = "required"
         if (disabled) attributes["disabled"] = "disabled"
+        block()
     }
 }

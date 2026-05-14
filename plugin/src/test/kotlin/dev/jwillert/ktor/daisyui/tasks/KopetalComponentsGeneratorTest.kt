@@ -83,6 +83,23 @@ class KopetalComponentsGeneratorTest {
     }
 
     @Test
+    fun `generateConfigureStatement handles block parameter in slotParams`() {
+        val entry = ComponentEntry(
+            name = "button",
+            description = "button",
+            file = "src/button/Button.kt",
+            kotlinPackage = "dev.jwillert.daisyui.components",
+            slotRegistryClass = "dev.jwillert.kopetal.KopetalRegistry",
+            slotKey = "dev.jwillert.kopetal.ButtonKey",
+            slotParams = "label: String, disabled: Boolean, block: BUTTON.() -> Unit"
+        )
+        assertEquals(
+            "KopetalRegistry[ButtonKey] = { label, disabled, block -> koButton(label = label, disabled = disabled, block = block) }",
+            generateConfigureStatement(entry)
+        )
+    }
+
+    @Test
     fun `generateKopetalComponentsContent returns empty string when no slot entries`() {
         val entries = listOf(
             ComponentEntry("modal", "modal", "src/modal/Modal.kt", "pkg", null, null, null),

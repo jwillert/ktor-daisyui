@@ -6,7 +6,7 @@
     "kotlinPackage": "dev.jwillert.daisyui.components",
     "slotRegistryClass": "dev.jwillert.kopetal.KopetalRegistry",
     "slotKey": "dev.jwillert.kopetal.ButtonKey",
-    "slotParams": "label: String, disabled: Boolean"
+    "slotParams": "label: String, disabled: Boolean, block: BUTTON.() -> Unit"
   },
   {
     "name": "modal",
@@ -33,6 +33,6 @@
     "kotlinPackage": "dev.jwillert.daisyui.components",
     "slotRegistryClass": "dev.jwillert.kopetal.KopetalRegistry",
     "slotKey": "dev.jwillert.kopetal.InputKey",
-    "slotParams": "name: String, type: String, required: Boolean"
+    "slotParams": "name: String, type: String, required: Boolean, block: INPUT.() -> Unit"
   }
 ]
