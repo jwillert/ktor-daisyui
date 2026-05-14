@@ -22,10 +22,11 @@ fun Application.module() {
     install(KopetalForms)
 
     // Step 2: override individual slots — only what you need to change
-    KopetalRegistry[ButtonKey] = { label, disabled ->
+    KopetalRegistry[ButtonKey] = { label, disabled, block ->
         button(classes = if (disabled) "btn btn-ghost btn-disabled" else "btn btn-secondary") {
             type = ButtonType.button
             if (disabled) attributes["disabled"] = "disabled"
+            block()
             +label
         }
     }
