@@ -5,6 +5,7 @@ import dev.jwillert.kopetal.InputKey
 import dev.jwillert.kopetal.KopetalRegistry
 import dev.jwillert.kopetal.koButton
 import dev.jwillert.kopetal.koInput
+import dev.jwillert.kopetal.forms.components.KopetalComponents
 import kotlinx.html.div
 import kotlinx.html.stream.createHTML
 import org.junit.jupiter.api.AfterEach
@@ -22,7 +23,7 @@ class KopetalFormsRegistryTest {
     @Test
     fun `button slot can be overridden`() {
         var called = false
-        KopetalRegistry[ButtonKey] = { _, _ -> called = true }
+        KopetalRegistry[ButtonKey] = { _, _, _ -> called = true }
         createHTML().div { koButton("Click me") }
         assertTrue(called)
     }
@@ -30,14 +31,14 @@ class KopetalFormsRegistryTest {
     @Test
     fun `input slot can be overridden independently of button`() {
         var inputCalled = false
-        KopetalRegistry[InputKey] = { _, _, _ -> inputCalled = true }
+        KopetalRegistry[InputKey] = { _, _, _, _ -> inputCalled = true }
         createHTML().div { koInput("email") }
         assertTrue(inputCalled)
     }
 
     @Test
     fun `default button renders with label and btn class`() {
-        installKopetalFormsDefaults()
+        KopetalComponents.configure()
 
         val html = createHTML().div {
             koButton("Save")
@@ -49,7 +50,7 @@ class KopetalFormsRegistryTest {
 
     @Test
     fun `default input renders with name attribute`() {
-        installKopetalFormsDefaults()
+        KopetalComponents.configure()
 
         val html = createHTML().div {
             koInput("username")
@@ -61,7 +62,7 @@ class KopetalFormsRegistryTest {
 
     @Test
     fun `formField renders label text and delegates input to registry`() {
-        installKopetalFormsDefaults()
+        KopetalComponents.configure()
 
         val html = createHTML().div {
             formField("Email Address", "email", type = "email", required = true)
@@ -76,7 +77,7 @@ class KopetalFormsRegistryTest {
     fun `formField uses overridden input slot`() {
         var capturedName = ""
         var capturedRequired = false
-        KopetalRegistry[InputKey] = { name, _, required ->
+        KopetalRegistry[InputKey] = { name, _, required, _ ->
             capturedName = name
             capturedRequired = required
         }
@@ -87,5 +88,16 @@ class KopetalFormsRegistryTest {
 
         assertTrue(capturedName == "my-email", "Expected name 'my-email', got '$capturedName'")
         assertTrue(capturedRequired, "Expected required=true")
+    }
+
+    @Test
+    fun `koButton block is invoked and can set html attributes`() {
+        KopetalComponents.configure()
+        val html = createHTML().div {
+            koButton("Save") {
+                attributes["data-test"] = "yes"
+            }
+        }
+        assertTrue(html.contains("data-test=\"yes\""), "Expected data-test attribute: $html")
     }
 }

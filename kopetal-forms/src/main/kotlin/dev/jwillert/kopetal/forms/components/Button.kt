@@ -40,7 +40,7 @@ fun FlowContent.koButton(
     button(classes = classes) {
         this.type = type
         if (disabled) attributes["disabled"] = "disabled"
-        +label
         block()
+        +label
     }
 }
