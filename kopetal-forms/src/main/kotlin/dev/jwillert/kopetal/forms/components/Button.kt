@@ -31,15 +31,14 @@ fun FlowContent.koButton(
     additionalClasses: String = "",
     block: BUTTON.() -> Unit = {}
 ) {
-    button {
+    val classes = listOfNotNull(
+        variant.css,
+        size.css.takeIf { it.isNotEmpty() },
+        "btn-disabled".takeIf { disabled },
+        additionalClasses.takeIf { it.isNotEmpty() }
+    ).joinToString(" ")
+    button(classes = classes) {
         this.type = type
-        val classes = listOfNotNull(
-            variant.css,
-            size.css.takeIf { it.isNotEmpty() },
-            "btn-disabled".takeIf { disabled },
-            additionalClasses.takeIf { it.isNotEmpty() }
-        ).joinToString(" ")
-        this.classes = setOf(classes)
         if (disabled) attributes["disabled"] = "disabled"
         +label
         block()
