@@ -10,14 +10,15 @@ import kotlinx.html.button
 import kotlinx.html.input
 
 fun installKopetalFormsDefaults() {
-    KopetalRegistry[ButtonKey] = { label, disabled ->
+    KopetalRegistry[ButtonKey] = { label, disabled, block ->
         button(classes = if (disabled) "btn btn-primary btn-disabled" else "btn btn-primary") {
             type = ButtonType.button
             if (disabled) attributes["disabled"] = "disabled"
             +label
+            block()
         }
     }
-    KopetalRegistry[InputKey] = { name, type, required ->
+    KopetalRegistry[InputKey] = { name, type, required, block ->
         val inputType = when (type) {
             "email" -> InputType.email
             "password" -> InputType.password
@@ -33,6 +34,7 @@ fun installKopetalFormsDefaults() {
         }
         input(type = inputType, name = name, classes = "input input-bordered") {
             if (required) attributes["required"] = "required"
+            block()
         }
     }
 }
