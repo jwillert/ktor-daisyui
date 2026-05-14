@@ -3,3 +3,4 @@ build/
 .kotlin/
 *.class
 node_modules/
+.superpowers/
