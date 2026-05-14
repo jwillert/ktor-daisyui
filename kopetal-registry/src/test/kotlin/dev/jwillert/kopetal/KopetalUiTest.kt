@@ -1,6 +1,8 @@
 package dev.jwillert.kopetal
 
+import kotlinx.html.button
 import kotlinx.html.div
+import kotlinx.html.input
 import kotlinx.html.stream.createHTML
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
@@ -31,7 +33,7 @@ class KopetalUiTest {
     @Test
     fun `koButton dispatches to registered implementation`() {
         var called = false
-        KopetalRegistry[ButtonKey] = { _, _ -> called = true }
+        KopetalRegistry[ButtonKey] = { _, _, _ -> called = true }
         createHTML().div { koButton("Click") }
         assertTrue(called)
     }
@@ -39,7 +41,7 @@ class KopetalUiTest {
     @Test
     fun `koInput dispatches to registered implementation`() {
         var called = false
-        KopetalRegistry[InputKey] = { _, _, _ -> called = true }
+        KopetalRegistry[InputKey] = { _, _, _, _ -> called = true }
         createHTML().div { koInput("email") }
         assertTrue(called)
     }
@@ -48,7 +50,7 @@ class KopetalUiTest {
     fun `koButton passes label and disabled correctly`() {
         var capturedLabel = ""
         var capturedDisabled = true
-        KopetalRegistry[ButtonKey] = { label, disabled ->
+        KopetalRegistry[ButtonKey] = { label, disabled, _ ->
             capturedLabel = label
             capturedDisabled = disabled
         }
@@ -60,7 +62,7 @@ class KopetalUiTest {
     @Test
     fun `koButton defaults disabled to false`() {
         var capturedDisabled = true
-        KopetalRegistry[ButtonKey] = { _, disabled -> capturedDisabled = disabled }
+        KopetalRegistry[ButtonKey] = { _, disabled, _ -> capturedDisabled = disabled }
         createHTML().div { koButton("Go") }
         assertFalse(capturedDisabled)
     }
@@ -70,7 +72,7 @@ class KopetalUiTest {
         var capturedName = ""
         var capturedType = ""
         var capturedRequired = false
-        KopetalRegistry[InputKey] = { name, type, required ->
+        KopetalRegistry[InputKey] = { name, type, required, _ ->
             capturedName = name
             capturedType = type
             capturedRequired = required
@@ -85,12 +87,45 @@ class KopetalUiTest {
     fun `koInput defaults type to text and required to false`() {
         var capturedType = ""
         var capturedRequired = true
-        KopetalRegistry[InputKey] = { _, type, required ->
+        KopetalRegistry[InputKey] = { _, type, required, _ ->
             capturedType = type
             capturedRequired = required
         }
         createHTML().div { koInput("username") }
         assertEquals("text", capturedType)
         assertFalse(capturedRequired)
+    }
+
+    @Test
+    fun `koButton passes block to registered implementation`() {
+        var blockInvoked = false
+        KopetalRegistry[ButtonKey] = { _, _, block ->
+            blockInvoked = true
+            createHTML().button { block() }
+        }
+        createHTML().div { koButton("Click") { } }
+        assertTrue(blockInvoked)
+    }
+
+    @Test
+    fun `koButton block receives correct HTML element context`() {
+        KopetalRegistry[ButtonKey] = { _, _, block ->
+            button { block() }
+        }
+        val html = createHTML().div {
+            koButton("X") { attributes["data-test"] = "yes" }
+        }
+        assertTrue(html.contains("data-test=\"yes\""), "Expected data-test attribute: $html")
+    }
+
+    @Test
+    fun `koInput passes block to registered implementation`() {
+        var blockInvoked = false
+        KopetalRegistry[InputKey] = { _, _, _, block ->
+            blockInvoked = true
+            createHTML().input { block() }
+        }
+        createHTML().div { koInput("name") { } }
+        assertTrue(blockInvoked)
     }
 }
