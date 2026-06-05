@@ -6,6 +6,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.options.Option
 import java.io.File
 import java.net.URI
 
@@ -20,6 +21,7 @@ abstract class AddComponentTask : DefaultTask() {
 
     @get:Input
     @get:Optional
+    @get:Option(option = "componentName", description = "Name of the component to add")
     abstract val componentName: Property<String>
 
     @get:Input
