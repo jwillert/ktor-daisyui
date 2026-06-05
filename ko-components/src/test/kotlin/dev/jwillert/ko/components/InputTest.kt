@@ -17,7 +17,7 @@ class InputTest {
     @Test
     fun `koInput renders input-bordered class`() {
         val html = createHTML().div { koInput("email") }
-        assertTrue(html.contains("input"), "Expected input class: $html")
+        assertTrue(html.contains("input-bordered"), "Expected input-bordered class: $html")
     }
 
     @Test

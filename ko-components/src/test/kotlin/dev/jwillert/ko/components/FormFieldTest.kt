@@ -22,7 +22,7 @@ class FormFieldTest {
 
     @Test
     fun `formField passes type to input`() {
-        val html = createHTML().div { formField("Email", "email", type = "email") }
-        assertTrue(html.contains("email"), "Expected email type: $html")
+        val html = createHTML().div { formField("Username", "username", type = "password") }
+        assertTrue(html.contains("password"), "Expected password type: $html")
     }
 }
