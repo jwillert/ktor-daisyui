@@ -1,11 +1,8 @@
 package sample
 
-import dev.jwillert.kopetal.ButtonKey
-import dev.jwillert.kopetal.InputKey
-import dev.jwillert.kopetal.KopetalRegistry
-import dev.jwillert.kopetal.forms.KopetalForms
-import dev.jwillert.kopetal.forms.formField
-import dev.jwillert.kopetal.koButton
+import dev.jwillert.ko.components.ButtonVariant
+import dev.jwillert.ko.components.formField
+import dev.jwillert.ko.components.koButton
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.html.*
@@ -18,21 +15,6 @@ fun main() {
 }
 
 fun Application.module() {
-    // Step 1: install Maven defaults (DaisyUI button + input)
-    install(KopetalForms)
-
-    // Step 2: override individual slots — only what you need to change
-    KopetalRegistry[ButtonKey] = { label, disabled, block ->
-        button(classes = if (disabled) "btn btn-ghost btn-disabled" else "btn btn-secondary") {
-            type = ButtonType.button
-            if (disabled) attributes["disabled"] = "disabled"
-            block()
-            +label
-        }
-    }
-
-    // InputKey stays as the KopetalForms default (DaisyUI input input-bordered)
-
     routing {
         get("/") {
             call.respondHtml {
@@ -45,18 +27,16 @@ fun Application.module() {
                     script(src = "https://cdn.tailwindcss.com") {}
                 }
                 body(classes = "p-8 max-w-lg") {
-                    h1(classes = "text-2xl font-bold mb-6") { +"Kopetal Forms Sample" }
+                    h1(classes = "text-2xl font-bold mb-6") { +"Kopetal Sample" }
 
                     form(action = "/submit", method = FormMethod.post, classes = "flex flex-col gap-4") {
-                        // formField delegates its input rendering to KopetalRegistry[InputKey]
                         formField("Email", "email", type = "email", required = true)
                         formField("Password", "password", type = "password", required = true)
                         formField("Username", "username")
 
                         div(classes = "flex gap-2 mt-2") {
-                            // koButton dispatches to KopetalRegistry[ButtonKey]
                             koButton("Submit")
-                            koButton("Cancel", disabled = true)
+                            koButton("Cancel", variant = ButtonVariant.GHOST, disabled = true)
                         }
                     }
                 }
