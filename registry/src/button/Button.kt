@@ -41,7 +41,7 @@ fun FlowContent.koButton(
         ).joinToString(" ")
         this.classes = setOf(classes)
         if (disabled) attributes["disabled"] = "disabled"
-        +label
         block()
+        +label
     }
 }

@@ -32,7 +32,7 @@ class ButtonTest {
     fun `koButton applies disabled class and attribute when disabled`() {
         val html = createHTML().div { koButton("Submit", disabled = true) }
         assertTrue(html.contains("btn-disabled"), "Expected btn-disabled: $html")
-        assertTrue(html.contains("disabled"), "Expected disabled attribute: $html")
+        assertTrue(html.contains("disabled=\"disabled\""), "Expected disabled attribute: $html")
     }
 
     @Test
