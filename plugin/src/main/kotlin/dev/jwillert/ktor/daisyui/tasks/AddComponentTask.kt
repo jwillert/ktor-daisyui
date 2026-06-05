@@ -14,9 +14,6 @@ data class ComponentEntry(
     val description: String,
     val file: String,
     val kotlinPackage: String,
-    val slotRegistryClass: String? = null,
-    val slotKey: String? = null,
-    val slotParams: String? = null,
 )
 
 abstract class AddComponentTask : DefaultTask() {
@@ -76,21 +73,6 @@ abstract class AddComponentTask : DefaultTask() {
         targetFile.writeText(sourceWithPackage)
 
         logger.lifecycle("Component '${component.name}' added at ${targetFile.relativeTo(project.projectDir)}")
-
-        // Regenerate KopetalComponents.kt for all installed slot components
-        val installedNames = outputDir.listFiles()
-            ?.filter { it.extension == "kt" && it.name != "KopetalComponents.kt" }
-            ?.map { it.nameWithoutExtension.replaceFirstChar { c -> c.lowercaseChar() } }
-            ?.toSet() ?: emptySet()
-
-        val packageName = derivePackage(outputDir)
-        val componentsContent = generateKopetalComponentsContent(installedNames, registry, packageName)
-
-        if (componentsContent.isNotEmpty()) {
-            val componentsFile = File(outputDir, "KopetalComponents.kt")
-            componentsFile.writeText(componentsContent)
-            logger.lifecycle("KopetalComponents.kt updated at ${componentsFile.relativeTo(project.projectDir)}")
-        }
     }
 
     private fun fetchRegistry(): List<ComponentEntry> {
@@ -127,10 +109,7 @@ abstract class AddComponentTask : DefaultTask() {
             val description = fields["description"] ?: ""
             val file = fields["file"] ?: return@forEach
             val kotlinPackage = fields["kotlinPackage"] ?: "dev.jwillert.ktor.daisyui.components"
-            val slotRegistryClass = fields["slotRegistryClass"]
-            val slotKey = fields["slotKey"]
-            val slotParams = fields["slotParams"]
-            entries.add(ComponentEntry(name, description, file, kotlinPackage, slotRegistryClass, slotKey, slotParams))
+            entries.add(ComponentEntry(name, description, file, kotlinPackage))
         }
 
         return entries

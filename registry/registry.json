@@ -3,10 +3,7 @@
     "name": "button",
     "description": "DaisyUI button variants with HTMX support",
     "file": "src/button/Button.kt",
-    "kotlinPackage": "dev.jwillert.daisyui.components",
-    "slotRegistryClass": "dev.jwillert.kopetal.KopetalRegistry",
-    "slotKey": "dev.jwillert.kopetal.ButtonKey",
-    "slotParams": "label: String, disabled: Boolean, block: BUTTON.() -> Unit"
+    "kotlinPackage": "dev.jwillert.daisyui.components"
   },
   {
     "name": "modal",
@@ -30,9 +27,6 @@
     "name": "input",
     "description": "DaisyUI text input with type and validation support",
     "file": "src/input/Input.kt",
-    "kotlinPackage": "dev.jwillert.daisyui.components",
-    "slotRegistryClass": "dev.jwillert.kopetal.KopetalRegistry",
-    "slotKey": "dev.jwillert.kopetal.InputKey",
-    "slotParams": "name: String, type: String, required: Boolean, block: INPUT.() -> Unit"
+    "kotlinPackage": "dev.jwillert.daisyui.components"
   }
 ]
