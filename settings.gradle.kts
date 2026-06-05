@@ -13,7 +13,5 @@ rootProject.name = "ktor-daisyui"
 
 include("plugin")
 include("registry")
-include("kopetal-registry")
-include("kopetal-forms")
 include("ko-components")
 include("sample")
