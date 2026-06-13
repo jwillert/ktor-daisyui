@@ -11,12 +11,10 @@ kotlin {
     jvmToolchain(21)
 }
 
-// Flat component layout for `main`; tests and VRT live outside `src/` so the
-// component directories stay unpolluted.
+// Standard layout: src/main/kotlin (components), src/test/kotlin (unit tests),
+// src/vrt/kotlin (visual regression tests). Only the VRT source set needs adding.
 sourceSets {
     named("main") {
-        kotlin.setSrcDirs(listOf("src"))
-        resources.setSrcDirs(listOf("src/main/resources"))
         // The daisyui plugin writes generated CSS (input.css/output.css) into
         // src/main/resources/static/css. Exclude it so processResources does not
         // read generateTailwindConfig/buildCss outputs (which would create an
@@ -24,14 +22,7 @@ sourceSets {
         // path, so it does not need to be a packaged resource.
         resources.exclude("static/css/**")
     }
-    named("test") {
-        kotlin.setSrcDirs(listOf("test/kotlin"))
-        resources.setSrcDirs(listOf("test/resources"))
-    }
-    create("vrt") {
-        kotlin.setSrcDirs(listOf("vrt/kotlin"))
-        resources.setSrcDirs(listOf("vrt/resources"))
-    }
+    create("vrt")
 }
 
 val main = sourceSets["main"]
@@ -70,7 +61,7 @@ tasks.named("processResources") {
 }
 
 val outputCss = layout.projectDirectory.file("src/main/resources/static/css/output.css")
-val goldenDir = layout.projectDirectory.dir("vrt/resources/golden")
+val goldenDir = layout.projectDirectory.dir("src/vrt/resources/golden")
 val diffDir = layout.buildDirectory.dir("vrt/diff")
 
 fun Test.configureVrt(mode: String) {
