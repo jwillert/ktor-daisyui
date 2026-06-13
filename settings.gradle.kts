@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("plugin")
     repositories {
         gradlePluginPortal()
         mavenCentral()
@@ -11,7 +12,6 @@ pluginManagement {
 
 rootProject.name = "ktor-daisyui"
 
-include("plugin")
 include("registry")
 include("ko-components")
 include("sample")

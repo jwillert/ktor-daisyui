@@ -26,7 +26,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish -Pversion=${GITHUB_REF_NAME#v}
+        run: ./gradlew publishAll -Pversion=${GITHUB_REF_NAME#v}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}

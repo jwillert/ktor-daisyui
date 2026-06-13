@@ -4,6 +4,9 @@ plugins {
     `maven-publish`
 }
 
+group = "dev.jwillert.ktor.daisyui"
+version = providers.gradleProperty("version").getOrElse("0.0.0-SNAPSHOT")
+
 repositories {
     mavenCentral()
     gradlePluginPortal()
