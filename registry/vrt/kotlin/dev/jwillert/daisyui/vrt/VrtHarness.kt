@@ -37,7 +37,16 @@ class VrtHarness {
 
     fun start() {
         try {
-            playwright = Playwright.create()
+            playwright = if (isDocker) {
+                // Rendering happens in the pinned container; do not download or
+                // validate a local browser (the host may lack the required system
+                // libraries). connect() uses the remote browser only.
+                Playwright.create(
+                    Playwright.CreateOptions().setEnv(mapOf("PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD" to "1")),
+                )
+            } else {
+                Playwright.create()
+            }
             browser = if (isDocker) {
                 val c = PlaywrightServerContainer().apply { start() }
                 container = c
