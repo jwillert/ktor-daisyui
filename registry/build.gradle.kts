@@ -17,6 +17,12 @@ sourceSets {
     named("main") {
         kotlin.setSrcDirs(listOf("src"))
         resources.setSrcDirs(listOf("src/main/resources"))
+        // The daisyui plugin writes generated CSS (input.css/output.css) into
+        // src/main/resources/static/css. Exclude it so processResources does not
+        // read generateTailwindConfig/buildCss outputs (which would create an
+        // implicit task dependency). The VRT harness reads output.css by absolute
+        // path, so it does not need to be a packaged resource.
+        resources.exclude("static/css/**")
     }
     named("test") {
         kotlin.setSrcDirs(listOf("test/kotlin"))
