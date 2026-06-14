@@ -8,6 +8,7 @@ import dev.jwillert.daisyui.components.koCard
 import dev.jwillert.daisyui.components.koInput
 import dev.jwillert.daisyui.components.koModal
 import dev.jwillert.daisyui.components.koTable
+import dev.jwillert.ktor.vrt.Scenario
 import kotlinx.html.p
 
 object Scenarios {
