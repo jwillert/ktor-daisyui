@@ -24,3 +24,9 @@ jobs:
 
       - name: Build
         run: ./gradlew build
+        env:
+          # Required to resolve the dev.jwillert.ktor-vrt plugin + library from
+          # GitHub Packages (published by the ktor-plugins repo). The default
+          # GITHUB_TOKEN needs read access to that package granted in its settings.
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

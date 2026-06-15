@@ -24,7 +24,7 @@ fun FlowContent.koModal(
             div {
                 classes = setOf("modal-action")
                 form {
-                    method = FormMethod.dialog
+                    attributes["method"] = "dialog"
                     button {
                         classes = setOf("btn")
                         +closeLabel
@@ -33,7 +33,7 @@ fun FlowContent.koModal(
             }
         }
         form {
-            method = FormMethod.dialog
+            attributes["method"] = "dialog"
             classes = setOf("modal-backdrop")
             button { +"close" }
         }
