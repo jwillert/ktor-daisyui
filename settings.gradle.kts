@@ -8,7 +8,7 @@ pluginManagement {
 
     plugins {
         kotlin("jvm") version "2.3.10"
-        id("dev.jwillert.ktor-vrt") version "0.2.0"
+        id("dev.jwillert.ktor-vrt") version "0.3.0"
     }
 }
 
